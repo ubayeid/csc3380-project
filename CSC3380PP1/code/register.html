@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        td {
+            padding: 8px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"],
+        input[type="reset"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        input[type="reset"] {
+            background-color: #f44336;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        input[type="reset"]:hover {
+            background-color: #da190b;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+        #msg {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+        }
+        hr {
+            margin: 20px 0;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const msg = urlParams.get('msg');
+            if (msg) {
+                document.getElementById('msg').textContent = msg;
+            }
+        }
+
+        function validate() {
+            // Get form values
+            const firstName = document.forms["myForm"]["fName"].value;
+            const lastName = document.forms["myForm"]["lName"].value;
+            const email = document.forms["myForm"]["eMail"].value;
+            const password = document.forms["myForm"]["pw"].value;
+            const confirmPassword = document.forms["myForm"]["cpw"].value;
+
+            // Clear previous error messages
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+            let isValid = true;
+
+            // Validate First Name (alphabets only)
+            const namePattern = /^[A-Za-z]+$/;
+            if (!namePattern.test(firstName)) {
+                document.getElementById('fnameError').textContent = 
+                    'First name must contain only alphabetical characters';
+                isValid = false;
+            }
+
+            // Validate Last Name (alphabets only)
+            if (!namePattern.test(lastName)) {
+                document.getElementById('lnameError').textContent = 
+                    'Last name must contain only alphabetical characters';
+                isValid = false;
+            }
+
+            // Validate Email (must be UNCP email)
+            const emailDomain = email.substring(email.lastIndexOf('@'));
+            if (emailDomain.toLowerCase() !== '@uncp.edu') {
+                document.getElementById('emailError').textContent = 
+                    'Email must be a UNCP email address (@uncp.edu)';
+                isValid = false;
+            }
+
+            // Validate Password Match
+            if (password !== confirmPassword) {
+                document.getElementById('pwError').textContent = 
+                    'Passwords do not match';
+                isValid = false;
+            }
+
+            // Validate Password Length
+            if (password.length < 6) {
+                document.getElementById('pwError').textContent = 
+                    'Password must be at least 6 characters long';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
+</head>
+<body>
+    <!-- This page is created by [YOUR NAME HERE] on [DATE] -->
+    <div class="container">
+        <h2>Registration Form</h2>
+        <p id="msg"></p>
+        
+        <form name="myForm" action="code/register.php" onsubmit="return validate()" method="post">
+            <table>
+                <tr>
+                    <td>First Name:</td>
+                    <td>
+                        <input name="fName" type="text" required>
+                        <span class="error" id="fnameError"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Last Name:</td>
+                    <td>
+                        <input name="lName" type="text" required>
+                        <span class="error" id="lnameError"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>User Name:</td>
+                    <td>
+                        <input name="uName" type="text" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>
+                        <input name="eMail" type="email" required>
+                        <span class="error" id="emailError"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td>
+                        <input name="pw" type="password" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Confirm Password:</td>
+                    <td>
+                        <input name="cpw" type="password" required>
+                        <span class="error" id="pwError"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Deposit:</td>
+                    <td>
+                        <input name="deposit" type="number" step="0.01" min="0" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="submit" value="Submit">
+                        <input type="reset" value="Reset">
+                    </td>
+                </tr>
+            </table>
+        </form>
+        
+        <hr>
+        <p style="text-align: center;">
+            Already have an account? <a href="login.html">Login here</a>
+        </p>
+    </div>
+</body>
+</html>
